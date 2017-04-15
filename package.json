@@ -1,0 +1,19 @@
+{
+  "name": "socketio",
+  "version": "1.0.0",
+  "description": "A project to learn socketi.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "dms"
+  },
+  "author": "sejal gupta",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^1.7.3"
+  }
+}

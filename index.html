@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hello world</title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    .panel {
+        display: none;
+        width: 50%;
+        margin: 50px auto;
+    }
+
+    .loading {
+        display: block;
+        text-align: center;
+        margin-top: 100px;
+    }
+
+    button {
+        margin-top: 20px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1 class="loading">Loading.......</h1>
+        <div class="panel panel-info">
+            <div class="panel-heading">Live Score</div>
+            <div class="panel-body">
+                <p>Live Sporting Event: Cricket Match</p>
+                <p>Current Score: <span class="runs"></span></p>
+                <p>Score:
+                    <span class="score"></span> -
+                    <span class="over"></span> Over
+                </p>
+                <p class="commentator">Commentator: <span class="message"></span></p>
+                <button type="button" class="btn btn-success connect">Tune-In</button>
+                <button type="button" class="btn btn-danger disconnect">Tune-Out</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        var connectToSocket = function() {
+                socket = io();
+            },
+            reConnectToSocket = function() {
+                socket.connect();
+            },
+            disConnectToSocket = function() {
+                socket.disconnect();
+            },
+            handleBroadcast = function() {
+                socket.on('broadcast', function(data) {
+
+                    /*Show loading till data is received from the server*/
+                    if ($('.loading').length) {
+                        $('.panel').show();
+                        $('.loading').hide();
+                    }
+
+                    $('.runs').html(data.runs);
+                    $('.score').html(data.score);
+
+                    if (data.message != '') {
+                        $('.message').html(data.message);
+                        $('.commentator').show();
+                    } else {
+                        $('.commentator').hide();
+                    }
+                    $('.over').html(data.over);
+                });
+            };
+
+        $(function() {
+            connectToSocket();
+            handleBroadcast();
+
+            $('.connect').on('click', function() {
+                reConnectToSocket();
+            });
+
+            $('.disconnect').on('click', function() {
+                disConnectToSocket();
+            });
+        });
+    </script>
+</body>
+
+</html>
